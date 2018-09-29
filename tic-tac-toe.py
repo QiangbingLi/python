@@ -20,7 +20,7 @@ class TicTacToe:
                 print('%5s' % self.__pieces[r][c], end='')
             print('\n')
 
-    def start(self):
+    def play(self):
         while (not self.tie and not self.computer_win and not self.player_win):
             if (self.turn == 0):  # computer move, just randomly
                 print('computer move')
@@ -69,7 +69,7 @@ class TicTacToe:
         if ( len(set(self.__pieces[row])) == 1 or # same elements in row
              len(set([row[col] for row in self.__pieces])) == 1 or # same lements in column
              (row == col and len(set([self.__pieces[r][r] for r in range(3)])) == 1) or # same elements in diagonal
-             (row == (2-col) and len(set([self.__pieces[r][2-r] for r in range(3)])) == 1) ): # same elements in contra diagonal
+             (row == (2 - col) and len(set([self.__pieces[r][2 - r] for r in range(3)])) == 1) ): # same elements in contra diagonal
             if (self.turn == 0):
                 self.computer_win  = True
             if(self.turn == 1):
@@ -94,4 +94,4 @@ class TicTacToe:
         return (self.__pieces[row][col] == '*')
 
 game = TicTacToe()
-game.start()
+game.play()
