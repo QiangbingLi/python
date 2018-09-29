@@ -47,27 +47,39 @@ class TicTacToe:
             print('you win, congratulations!')
                     
 
-    # defines how computer moves
+    # Defines how computer moves.  
     def get_rc(self):
         empty = []
         for r in range(3):
             for c in range(3):
                 if self.can_move(r, c):
                     empty.append([r, c])
-        if len(empty) == 0:
-            return None
+        
+        for row, col in empty:
+            if ( len(set(self.__pieces[row])) == 2 or # 2 same elements in row
+                 len(set([row[col] for row in self.__pieces])) == 2 or # 2 same elements in column
+                 (row == col and len(set([self.__pieces[r][r] for r in range(3)])) == 2) or # 2 same elements in diagonal
+                 (row == (2 - col) and len(set([self.__pieces[r][2 - r] for r in range(3)])) == 2) ): # 2 same elements in contra diagonal
+                print([row,col])
+                return [row, col]
+
         select = randint(0, len(empty) - 1)
         return empty[select]
 
 
+
     def check_tie(self):
-        if not self.get_rc():
-            self.tie = True
+        full = True
+        for r in range(3):
+            for c in range(3):
+                if self.can_move(r, c):
+                    full = False
+        self.tie = ( full and not self.computer_win and not self.player_win )
 
 
     def check_win(self, row, col):
         if ( len(set(self.__pieces[row])) == 1 or # same elements in row
-             len(set([row[col] for row in self.__pieces])) == 1 or # same lements in column
+             len(set([row[col] for row in self.__pieces])) == 1 or # same ements in column
              (row == col and len(set([self.__pieces[r][r] for r in range(3)])) == 1) or # same elements in diagonal
              (row == (2 - col) and len(set([self.__pieces[r][2 - r] for r in range(3)])) == 1) ): # same elements in contra diagonal
             if (self.turn == 0):
@@ -80,8 +92,8 @@ class TicTacToe:
     def move(self, row, col):
         if self.can_move(row, col):
             self.__pieces[row][col] = self.player_piece[self.turn]
-            self.check_tie()
             self.check_win(row, col)
+            self.check_tie()
             success = True
         else:
             print('cannot move to (row = %d, column = %d), try again' % (row + 1, col + 1))
