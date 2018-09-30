@@ -58,43 +58,19 @@ class TicTacToe:
         
         # move to win
         for r, c in empty:
-            row = self.__pieces[r]
-            if (row.count('O') == 2):
+            if ( self.__pieces[r].count('O') == 2 or 
+                 [row[c] for row in self.__pieces].count('O') == 2 or 
+                 (r == c and [self.__pieces[r][r] for r in range(3)].count('O') == 2) or 
+                 (r == (2 - c) and [self.__pieces[r][2 - r] for r in range(3)].count('O') == 2) ):
                 return [r, c] 
 
-            column = [row[c] for row in self.__pieces]
-            if (column.count('O') == 2):
-                return [r, c]
-
-            if (r == c):
-                diag = [self.__pieces[r][r] for r in range(3)]
-                if (diag.count('O') == 2):
-                    return [r, c]
-            
-            if (r == 2 - c):
-                contra_diag = [self.__pieces[r][2 - r] for r in range(3)]
-                if (contra_diag.count('O') == 2):
-                    return [r, c]
-
-        # move to prevent player to win
+       # move to prevent player to win
         for r, c in empty:
-            row = self.__pieces[r]
-            if (row.count('X') ==2):
+            if ( self.__pieces[r].count('X') == 2 or 
+                 [row[c] for row in self.__pieces].count('X') == 2 or 
+                 (r == c and [self.__pieces[r][r] for r in range(3)].count('X') == 2) or 
+                 (r == (2 - c) and [self.__pieces[r][2 - r] for r in range(3)].count('X') == 2) ):
                 return [r, c] 
-
-            column = [row[c] for row in self.__pieces]
-            if (column.count('X') ==2):
-                return [r, c]
-
-            if (r == c):
-                diag = [self.__pieces[r][r] for r in range(3)]
-                if (diag.count('X') ==2):
-                    return [r, c]
-            
-            if (r == 2 - c):
-                contra_diag = [self.__pieces[r][2 - r] for r in range(3)]
-                if (contra_diag.count('X') ==2):
-                    return [r, c]                    
 
         # random move if no rule to follow
         select = randint(0, len(empty) - 1)
