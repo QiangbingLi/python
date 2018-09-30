@@ -49,20 +49,54 @@ class TicTacToe:
 
     # Defines how computer moves.  
     def get_rc(self):
+        # find all movable positions
         empty = []
         for r in range(3):
             for c in range(3):
                 if self.can_move(r, c):
                     empty.append([r, c])
         
-        for row, col in empty:
-            if ( len(set(self.__pieces[row])) == 2 or # 2 same elements in row
-                 len(set([row[col] for row in self.__pieces])) == 2 or # 2 same elements in column
-                 (row == col and len(set([self.__pieces[r][r] for r in range(3)])) == 2) or # 2 same elements in diagonal
-                 (row == (2 - col) and len(set([self.__pieces[r][2 - r] for r in range(3)])) == 2) ): # 2 same elements in contra diagonal
-                print([row,col])
-                return [row, col]
+        # move to win
+        for r, c in empty:
+            row = self.__pieces[r]
+            if (row.count('O') == 2):
+                return [r, c] 
 
+            column = [row[c] for row in self.__pieces]
+            if (column.count('O') == 2):
+                return [r, c]
+
+            if (r == c):
+                diag = [self.__pieces[r][r] for r in range(3)]
+                if (diag.count('O') == 2):
+                    return [r, c]
+            
+            if (r == 2 - c):
+                contra_diag = [self.__pieces[r][2 - r] for r in range(3)]
+                if (contra_diag.count('O') == 2):
+                    return [r, c]
+
+        # move to prevent player to win
+        for r, c in empty:
+            row = self.__pieces[r]
+            if (row.count('X') ==2):
+                return [r, c] 
+
+            column = [row[c] for row in self.__pieces]
+            if (column.count('X') ==2):
+                return [r, c]
+
+            if (r == c):
+                diag = [self.__pieces[r][r] for r in range(3)]
+                if (diag.count('X') ==2):
+                    return [r, c]
+            
+            if (r == 2 - c):
+                contra_diag = [self.__pieces[r][2 - r] for r in range(3)]
+                if (contra_diag.count('X') ==2):
+                    return [r, c]                    
+
+        # random move if no rule to follow
         select = randint(0, len(empty) - 1)
         return empty[select]
 
