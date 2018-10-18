@@ -106,7 +106,7 @@ class TicTacToe:
                  contra_diagonal_good = contra_diagonal.count('X') == 1 and contra_diagonal.count('*') == 2
             # True = 1, False = 0
             good = row_good + column_good + diagonal_good + contra_diagonal_good
-            # win move for at least two 'True's
+            # prevention move for at least two 'True's
             if good >= 2:
                 return [r, c]
 
