@@ -72,6 +72,44 @@ class TicTacToe:
                  (r == (2 - c) and [self.__pieces[r][2 - r] for r in range(3)].count('X') == 2) ):
                 return [r, c] 
 
+       # smart move to a indirect win
+        for r, c in empty:
+            row_good = self.__pieces[r].count('O') == 1 and self.__pieces[r].count('*') == 2
+            column = [row[c] for row in self.__pieces]
+            column_good = column.count('O') == 1 and  column.count('*') == 2
+            diagonal_good = False
+            contra_diagonal_good = False
+            if r == c:
+                 diagonal = [self.__pieces[r][r] for r in range(3)]
+                 diagonal_good = diagonal.count('O') == 1 and diagonal.count('*') == 2 
+            if r == 2 - c:
+                 contra_diagonal = [self.__pieces[r][2 - r] for r in range(3)]
+                 contra_diagonal_good = contra_diagonal.count('O') == 1 and contra_diagonal.count('*') == 2
+            # True = 1, False = 0
+            good = row_good + column_good + diagonal_good + contra_diagonal_good
+            # win move for at least two 'True's
+            if good >= 2:
+                return [r, c]
+
+        # smart move to prevent player's indirect win
+        for r, c in empty:
+            row_good = self.__pieces[r].count('X') == 1 and self.__pieces[r].count('*') == 2
+            column = [row[c] for row in self.__pieces]
+            column_good = column.count('X') == 1 and  column.count('*') == 2
+            diagonal_good = False
+            contra_diagonal_good = False
+            if r == c:
+                 diagonal = [self.__pieces[r][r] for r in range(3)]
+                 diagonal_good = diagonal.count('X') == 1 and diagonal.count('*') == 2 
+            if r == 2 - c:
+                 contra_diagonal = [self.__pieces[r][2 - r] for r in range(3)]
+                 contra_diagonal_good = contra_diagonal.count('X') == 1 and contra_diagonal.count('*') == 2
+            # True = 1, False = 0
+            good = row_good + column_good + diagonal_good + contra_diagonal_good
+            # win move for at least two 'True's
+            if good >= 2:
+                return [r, c]
+
         # random move if no rule to follow
         select = randint(0, len(empty) - 1)
         return empty[select]
